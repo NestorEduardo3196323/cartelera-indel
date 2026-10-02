@@ -39,7 +39,19 @@ CRITERIO DE ACEPTACIÓN: abro la app, publico un evento con fecha, hora y lugar,
 **Commit:** M2: persistencia de datos
 
 ## M3 · Experiencia
-(pendiente)
+CONTEXTO: Seguimos sobre la MISMA app, CARTELERA INDEL, cartelera de eventos de la comunidad educativa. Ya tiene P0, M1 y M2: publicar evento (título, fecha, hora, lugar, tipo), filtrar por semana o tipo, recordatorio del evento más próximo y persistencia en localStorage.
+
+TAREA (M3): Ajustá la interfaz para celular SIN cambiar la lógica. Requisitos:
+1. Se usa bien desde 320 px de ancho, con una sola mano y sin hacer zoom.
+2. Contraste suficiente para leer al sol; texto nunca menor a 16 px.
+3. Todos los campos del formulario con etiqueta visible (fecha, hora, lugar, tipo), no solo placeholder.
+4. Un solo botón principal por pantalla (ej: "Publicar evento"); los demás, secundarios.
+5. Estado vacío: qué se muestra cuando NO hay ningún evento cargado, con una frase que invite a publicar el primero.
+6. Mensajes de éxito y error visibles, en español, sin palabras técnicas.
+
+Dame solo los cambios (archivo y lugar) y decime cuál de los 6 puntos NO pudiste cumplir y por qué.
+
+NO TE ADELANTES: nada de validaciones de robustez (M4) ni IA (M5).
 
 ## M4 · Robustez
 (pendiente)
