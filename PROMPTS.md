@@ -27,11 +27,16 @@ CRITERIO DE ACEPTACIÓN: abro la app, publico un evento con fecha, hora y lugar,
 3. Recordatorio del evento más próximo: se muestra y se actualiza correctamente.
 
 **Resultado:** Las tres funciones quedaron confirmadas y funcionando.
-**Evidencia:** evidencias/E1-antes.png, evidencias/E1-despues.png
+**Evidencia:** evidencias/E1-antes.png, evidencias/E1-despues.png, evidencias/E1.0-despues.png
 **Commit:** M1: verificacion de las tres funciones minimas
 
 ## M2 · Datos
-(pendiente)
+**Prompt textual:**
+**Qué devolvió:** la app ahora guarda los eventos en localStorage; sobreviven al cerrar y reabrir. Se guardan eventos publicados y pasados.
+**Qué acepté:** el código de guardar, leer y borrar con localStorage.
+**Qué corregí a mano:** (lo que hayas tocado, o "nada")
+**Evidencia:** evidencias/E2-antes.png, evidencias/E2-despues.png, evidencias/E2.0-despues.png
+**Commit:** M2: persistencia de datos
 
 ## M3 · Experiencia
 (pendiente)
