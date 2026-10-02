@@ -38,3 +38,19 @@ CRITERIO DE ACEPTACIÓN: abro la app, publico un evento con fecha, hora y lugar,
 - El prompt que más me sirvió y por qué: …
 - El error más caro que cometí: …
 - Lo que haría distinto la próxima vez: …
+
+
+## M1 · Función
+(pendiente)
+
+## M1 · Función
+**Prompt textual:** No se usó un prompt nuevo en esta etapa. Las tres funciones mínimas (publicar evento, filtrar por semana/tipo y recordatorio del evento más próximo) salieron completas desde la generación inicial de P0.
+
+**Qué hice en M1:** Verifiqué las tres funciones una por una, a mano:
+1. Publicar un evento con título, fecha, hora, lugar y tipo: funciona, el evento aparece en la lista.
+2. Filtrar por semana (Esta semana / Próxima semana) y por tipo de actividad: funciona.
+3. Recordatorio del evento más próximo: se muestra y se actualiza correctamente.
+
+**Resultado:** Las tres funciones quedaron confirmadas y funcionando.
+**Evidencia:** evidencias/E1-antes.png, evidencias/E1-despues.png
+**Commit:** M1: verificacion de las tres funciones minimas
