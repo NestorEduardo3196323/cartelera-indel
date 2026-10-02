@@ -71,8 +71,15 @@ export function estaEnFiltroSemana(evento: Evento, filtro: FiltroSemana): boolea
   if (filtro === 'todas') return true;
 
   const fechaEvento = parsearFechaHora(evento.fecha, evento.hora);
-  const { inicio, fin } = obtenerRangoSemana(filtro);
+  const ahora = new Date().getTime();
 
+  // Histórico: actividades que ya ocurrieron
+  if (filtro === 'historico') {
+    return fechaEvento.getTime() < ahora;
+  }
+
+  // Para 'esta_semana' o 'proxima_semana'
+  const { inicio, fin } = obtenerRangoSemana(filtro);
   return fechaEvento.getTime() >= inicio.getTime() && fechaEvento.getTime() <= fin.getTime();
 }
 
@@ -188,6 +195,15 @@ export function generarEventosIniciales(): Evento[] {
   };
 
   return [
+    {
+      id: 'demo-historico-1',
+      titulo: 'Jornada Institucional de Bienvenida y Planificación',
+      fecha: formatYMD(-4), // Ocurrió hace 4 días (Histórico)
+      hora: '09:00',
+      lugar: 'Aula Magna',
+      tipoActividad: 'Institucional',
+      creadoEn: Date.now() - 3600000 * 96,
+    },
     {
       id: 'demo-1',
       titulo: 'Mesa de Exámenes Finales y Recuperatorios',

@@ -32,6 +32,7 @@ const OPCIONES_SEMANA: { valor: FiltroSemana; etiqueta: string }[] = [
   { valor: 'todas', etiqueta: 'Todas las fechas' },
   { valor: 'esta_semana', etiqueta: 'Esta semana' },
   { valor: 'proxima_semana', etiqueta: 'Próxima semana' },
+  { valor: 'historico', etiqueta: 'Histórico (pasados)' },
 ];
 
 const estilosPorTipo: Record<string, { bg: string; text: string; border: string }> = {
@@ -93,7 +94,7 @@ export const ListaEventos: React.FC<ListaEventosProps> = ({
             <CalendarDays className="w-3 h-3 text-indigo-400" />
             Por período / semana:
           </label>
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             {OPCIONES_SEMANA.map((opcion) => {
               const activo = filtroSemana === opcion.valor;
               return (

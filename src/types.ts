@@ -19,6 +19,6 @@ export interface Evento {
   creadoEn: number;     // Timestamp de creación
 }
 
-export type FiltroSemana = 'todas' | 'esta_semana' | 'proxima_semana';
+export type FiltroSemana = 'todas' | 'esta_semana' | 'proxima_semana' | 'historico';
 
 export type FiltroTipo = 'todos' | TipoActividad;

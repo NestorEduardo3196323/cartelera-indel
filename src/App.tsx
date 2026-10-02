@@ -12,38 +12,24 @@
 
 import React, { useState, useEffect } from 'react';
 import { Evento, FiltroSemana, FiltroTipo } from './types';
-import { encontrarEventoMasProximo, generarEventosIniciales } from './utils/dateUtils';
+import { encontrarEventoMasProximo } from './utils/dateUtils';
+import { 
+  cargarEventos, 
+  guardarEventos, 
+  exportarEventosAJson, 
+  borrarEventos 
+} from './utils/storageUtils';
 import { EventoProximoCard } from './components/EventoProximoCard';
 import { FormularioEvento } from './components/FormularioEvento';
 import { ListaEventos } from './components/ListaEventos';
-import { Plus, Megaphone, School, RefreshCw, CheckCircle2 } from 'lucide-react';
-
-const STORAGE_KEY = 'cartelera_indel_eventos_v1';
+import { Plus, Megaphone, School, RefreshCw, CheckCircle2, Download } from 'lucide-react';
 
 export default function App() {
   /**
-   * Estado de eventos con persistencia en localStorage.
-   * 
-   * ¡CUIDADO CON EL ERROR TÍPICO!:
-   * Siempre envolver el acceso a localStorage en bloques try/catch.
-   * En navegadores con modo incógnito estricto o políticas de cookies bloqueadas,
-   * llamar a localStorage.getItem() o setItem() puede lanzar una excepción fatal (SecurityError).
+   * Estado de eventos con persistencia en localStorage a través de storageUtils.
+   * Inicializa leyendo el almacenamiento local y asegurando eventos iniciales si está vacío.
    */
-  const [eventos, setEventos] = useState<Evento[]>(() => {
-    try {
-      const guardados = localStorage.getItem(STORAGE_KEY);
-      if (guardados) {
-        const parseados = JSON.parse(guardados);
-        if (Array.isArray(parseados) && parseados.length > 0) {
-          return parseados;
-        }
-      }
-    } catch (e) {
-      console.warn('No se pudo acceder a localStorage, usando eventos en memoria:', e);
-    }
-    // Si es la primera vez o no hay datos, inicializamos con actividades institucionales de prueba
-    return generarEventosIniciales();
-  });
+  const [eventos, setEventos] = useState<Evento[]>(() => cargarEventos());
 
   // Filtros activos
   const [filtroSemana, setFiltroSemana] = useState<FiltroSemana>('todas');
@@ -52,16 +38,12 @@ export default function App() {
   // Control del modal o vista de formulario en móvil
   const [mostrarFormulario, setMostrarFormulario] = useState<boolean>(false);
 
-  // Mensaje temporal de éxito tras publicar
+  // Mensaje temporal de éxito tras publicar o exportar
   const [mensajeExito, setMensajeExito] = useState<string | null>(null);
 
-  // Guardar en localStorage ante cualquier cambio de eventos
+  // Sincronizar automáticamente en localStorage cada vez que la lista cambie
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(eventos));
-    } catch (e) {
-      console.warn('Error al persistir en localStorage:', e);
-    }
+    guardarEventos(eventos);
   }, [eventos]);
 
   /**
@@ -95,10 +77,22 @@ export default function App() {
    * Restablecer eventos de prueba
    */
   const handleRestablecerEventos = () => {
-    const eventosPorDefecto = generarEventosIniciales();
-    setEventos(eventosPorDefecto);
+    borrarEventos();
+    const cargados = cargarEventos();
+    setEventos(cargados);
     setFiltroSemana('todas');
     setFiltroTipo('todos');
+    setMensajeExito('Eventos iniciales restablecidos correctamente.');
+    setTimeout(() => setMensajeExito(null), 3000);
+  };
+
+  /**
+   * Exportar respaldo a archivo .json
+   */
+  const handleExportarRespaldo = () => {
+    exportarEventosAJson(eventos);
+    setMensajeExito('Respaldo descargado: cartelera-indel-respaldo.json');
+    setTimeout(() => setMensajeExito(null), 4000);
   };
 
   return (
@@ -177,21 +171,33 @@ export default function App() {
         />
 
         {/* Pie de herramientas auxiliares */}
-        <div className="pt-4 border-t border-neutral-900 flex items-center justify-between text-xs text-neutral-400">
+        <div className="pt-4 border-t border-neutral-900 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-400">
           <div className="flex items-center gap-1.5">
             <Megaphone className="w-3.5 h-3.5 text-neutral-400" />
             <span>{eventos.length} actividades registradas</span>
           </div>
 
-          <button
-            type="button"
-            onClick={handleRestablecerEventos}
-            className="flex items-center gap-1 text-[11px] text-neutral-400 hover:text-neutral-300 transition-colors"
-            title="Recargar actividades institucionales iniciales"
-          >
-            <RefreshCw className="w-3 h-3" />
-            <span>Restablecer ejemplos</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleExportarRespaldo}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-300 border border-neutral-800 text-[11px] font-medium transition-colors"
+              title="Descargar respaldo de los eventos en formato JSON"
+            >
+              <Download className="w-3 h-3 text-indigo-400" />
+              <span>Exportar respaldo (.json)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleRestablecerEventos}
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] text-neutral-400 hover:text-neutral-200 transition-colors"
+              title="Recargar actividades institucionales iniciales"
+            >
+              <RefreshCw className="w-3 h-3" />
+              <span>Restablecer</span>
+            </button>
+          </div>
         </div>
       </main>
 
